@@ -1,0 +1,72 @@
+.border{
+    border: 2px ;
+    margin: 3px;
+}
+
+.justify-content{
+    justify-content: center;
+}
+
+.flex{
+    display: flex;
+}
+
+
+.items-center{
+    align-items: center;
+}
+
+.bg-black{
+    background-color: black;
+    color: white;
+}
+
+.invert{
+    filter: invert(1);
+}
+
+.bg-grey{
+    background-color: #121212;
+}
+
+.rounded{
+    border-radius: 4px;
+}
+
+.m-1{
+    margin: 5px;
+}
+.p-1{
+    padding:10px;
+}
+
+/* Dark theme and thin scrollbar */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    position: relative;
+    right: 5vw;
+}
+
+::-webkit-scrollbar-track {
+    background: #2e2e2e;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+    border: 2px solid #2e2e2e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+
