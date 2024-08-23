@@ -23,17 +23,17 @@ Note
 TechStack
 ---------
 
-1 HTML
+* HTML
 
-2 CSS
+* CSS
 
-3 JavaScript
+* JavaScript
 
-4 Tailwind CSS
+* Tailwind CSS
 
-5 Spotify Developer API
+* Spotify Developer API
 
-6 WebHostMost
+* WebHostMost
 
 
 Features
@@ -77,20 +77,23 @@ Features
 Contributing
 ------------
 
-
 I welcome contributions to the Spotify Clone project. If you would like to contribute, please fork the repository and submit a pull request.
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
-Fork the repository
+/////
+//////////
+/////////////////
 
-Create a new branch: git checkout -b my-branch-name
+--> Fork the repository
 
-Make your changes and commit them: git commit -m 'Add some feature'
+--> Create a new branch: git checkout -b my-branch-name
 
-Push to the original branch: git push origin my-branch-name
+--> Make your changes and commit them: git commit -m 'Add some feature'
 
-Create a pull request detailing your changes
+--> Push to the original branch: git push origin my-branch-name
+
+--> Create a pull request detailing your changes
 
 
 
