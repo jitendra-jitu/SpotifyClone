@@ -182,6 +182,8 @@ async function DisplayAlbums() {
     })
 
 
+
+
 }
 
 
@@ -224,6 +226,21 @@ async function main() {
     // timeupdate event 
     currentsong.addEventListener("timeupdate", () => {
         // console.log(currentsong.currentTime,currentsong.duration);
+
+
+
+        //Auto-play song after completion of this play-time
+        if(formatTime(currentsong.currentTime)==formatTime(currentsong.duration)){
+            let index = songs.indexOf(currentsong.src.split("/").slice(-1)[0]);
+            if(index==songs.length-1){
+                playMusic(songs[0]);
+            }
+            else{
+                playMusic(songs[index+1]);
+            }
+        }
+
+
         document.querySelector(".songtime").innerHTML = `${formatTime(currentsong.currentTime)}/${formatTime(currentsong.duration)}`;
         document.querySelector(".circle").style.left = (currentsong.currentTime / currentsong.duration) * 100 + "%";
     }
@@ -262,8 +279,8 @@ async function main() {
         if (index > 0) {
             playMusic(songs[index - 1]);
         }
-        else{
-            playMusic(songs[songs.length-1])
+        else {
+            playMusic(songs[songs.length - 1])
         }
     })
 
@@ -277,7 +294,7 @@ async function main() {
 
         let index = songs.indexOf(currentsong.src.split("/").slice(-1)[0]);
 
-        if(index == songs.length-1){
+        if (index == songs.length - 1) {
             playMusic(songs[0])
         }
         // if (index < songs.length)
@@ -295,21 +312,19 @@ async function main() {
     })
 
 
-    document.querySelector(".volume img").addEventListener("click",(e)=>{
-        if(e.target.src.includes("volume.svg")){
+    document.querySelector(".volume img").addEventListener("click", (e) => {
+        if (e.target.src.includes("volume.svg")) {
             // console.log(e.target.src)
-            e.target.src= e.target.src.replace("volume.svg","mute.svg");
-            currentsong.volume=0
+            e.target.src = e.target.src.replace("volume.svg", "mute.svg");
+            currentsong.volume = 0
         }
-        else{
-            e.target.src= e.target.src.replace("mute.svg","volume.svg");
-            currentsong.volume=.7;
+        else {
+            e.target.src = e.target.src.replace("mute.svg", "volume.svg");
+            currentsong.volume = .7;
         }
     })
 
 
-
-    
 
 }
 
