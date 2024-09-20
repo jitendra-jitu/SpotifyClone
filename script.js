@@ -262,6 +262,9 @@ async function main() {
         if (index > 0) {
             playMusic(songs[index - 1]);
         }
+        else{
+            playMusic(songs[songs.length-1])
+        }
     })
 
 
@@ -273,7 +276,12 @@ async function main() {
         // console.log(currentsong.src.split("/")[-1][0]);
 
         let index = songs.indexOf(currentsong.src.split("/").slice(-1)[0]);
-        if (index < songs.length) {
+
+        if(index == songs.length-1){
+            playMusic(songs[0])
+        }
+        // if (index < songs.length)
+        else {
             playMusic(songs[index + 1]);
         }
     })
