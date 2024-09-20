@@ -431,9 +431,7 @@ body{
         font-size: 10px;
     }
 
-    .infobar *{
-        /* padding: 10px 5px 65px; */
-    }
+
 
     .songbtns{
         gap: 5px;
