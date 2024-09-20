@@ -257,7 +257,7 @@ body{
 
 .songs-list ul li{
     list-style: decimal;
-    gap:0.5vw;
+    gap:0.05vw;
     display: flex;
     border: 0.5px solid white;
     cursor: pointer;
@@ -272,6 +272,15 @@ body{
   .songs-list ul li:hover {
     opacity: 1; /* Background color on hover */
     border-width: 2.5px ;
+  }
+
+
+  
+
+
+
+  .songs-list ul li .info{
+    width:8vw;
   }
 
 
