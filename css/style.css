@@ -255,24 +255,54 @@ body{
     margin: 15px 0px;
 }
 
-.songs-list ul li{
+
+.songs-list ul li {
     list-style: decimal;
-    gap:0.05vw;
+    gap: 0.05vw;
     display: flex;
     border: 0.5px solid white;
     cursor: pointer;
     border-radius: 3px;
-    transition: background-color 1s ease-in-out;
     opacity: 0.5;
-    
+    background-color: #121212; 
+    position: relative;
+    overflow: hidden; 
+    transition: opacity 0.5s ease-in-out;
+}
+
+.songs-list ul li:hover {
+    opacity: 1;
+    border-width: 2.5px;
+}
+
+.songs-list ul li::before {
+    content: '';
+    position: absolute;
+    /* top: 0; */
+    left: 0;
+    height: 100%;
+    width: 0;
+    background-color: #1E1E1E; /* Hover color */
+    transition: width 0.35s ease-in-out;
+}
+
+.songs-list ul li:hover::before {
+    width: 100%; 
 }
 
 
 
-  .songs-list ul li:hover {
-    opacity: 1; /* Background color on hover */
-    border-width: 2.5px ;
-  }
+
+@keyframes slideColor {
+
+    0% {
+        background-position: 100% 0;  /* Start with the gradient at the far left */
+    }
+    100% {
+        background-position: 0% 0;  /* Slide the gradient to the right */
+    }
+
+}
 
 
   
@@ -281,6 +311,8 @@ body{
 
   .songs-list ul li .info{
     width:8vw;
+    position: relative;
+    z-index: 1;
   }
 
 
