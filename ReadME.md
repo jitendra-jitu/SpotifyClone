@@ -62,22 +62,22 @@ Create a pull request explaining your changes.
 # Future Enhancements
 We aim to elevate the user experience with several upcoming features:
 
-1 Dark Mode: A toggle for better accessibility and aesthetics.
+1. Dark Mode: A toggle for better accessibility and aesthetics.
 
-2 Social Sharing: The ability to share favorite songs and playlists with friends via social media platforms.
+2. Social Sharing: The ability to share favorite songs and playlists with friends via social media platforms.
 
-3 Offline Mode: Cache songs locally to allow uninterrupted listening even without an internet connection.
+3. Offline Mode: Cache songs locally to allow uninterrupted listening even without an internet connection.
 
-4 AI-Powered Recommendations: Implement AI to provide real-time suggestions based on user listening patterns and preferences.
+4. AI-Powered Recommendations: Implement AI to provide real-time suggestions based on user listening patterns and preferences.
 
-5 Multiple Language Support: Expand the user base by adding support for various languages.
+5. Multiple Language Support: Expand the user base by adding support for various languages.
 
 
 
 # References
 
-1 YouTube Tutorials: For guidance on building music streaming applications, check out Code with Harry's tutorial on Spotify API integration which provides a comprehensive overview of using the Spotify API in web projects.
+1. YouTube Tutorials: For guidance on building music streaming applications, check out Code with Harry's tutorial on Spotify API integration which provides a comprehensive overview of using the Spotify API in web projects.
 
-2 Spotify Developer API Documentation: The official Spotify Developer API documentation offers extensive resources, including endpoint descriptions, authentication processes, and usage examples.
+2. Spotify Developer API Documentation: The official Spotify Developer API documentation offers extensive resources, including endpoint descriptions, authentication processes, and usage examples.
 
-3 Additional Resources: Explore articles and tutorials on modern web development practices, including freeCodeCamp and MDN Web Docs.
+3. Additional Resources: Explore articles and tutorials on modern web development practices, including freeCodeCamp and MDN Web Docs.
