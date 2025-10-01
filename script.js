@@ -18,7 +18,10 @@ let currentAlbumIndex = 0;
 // ========================
 function playMusic(trackIndex) {
     const track = songs[trackIndex];
-    if (!track) return console.error("❌ Track not found at index:", trackIndex);
+    if (!track) {
+        console.error("❌ Track not found at index:", trackIndex);
+        return;
+    }
 
     currentSongIndex = trackIndex;
     currentsong.src = track.url;
@@ -26,7 +29,7 @@ function playMusic(trackIndex) {
 
     document.querySelector(".songinfo").innerHTML = track.name;
     document.querySelector(".songtime").innerHTML = "00:00/00:00";
-    console.log("▶️ Playing:", track.name, "from album:", track.album);
+    console.log("▶️ Playing song:", track.name, "| Album:", track.album, "| Index:", trackIndex);
 }
 
 // ========================
@@ -44,9 +47,14 @@ function formatTime(seconds) {
 // ========================
 async function fetchFiles(folderId) {
     const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${API_KEY}&fields=files(id,name,mimeType)`;
+    console.log("🌐 Fetching folder:", folderId, "| URL:", url);
     const res = await fetch(url);
-    if (!res.ok) return [];
+    if (!res.ok) {
+        console.error("❌ Failed to fetch folder:", folderId, res.status, res.statusText);
+        return [];
+    }
     const data = await res.json();
+    console.log("📦 Items fetched:", data.files);
     return data.files || [];
 }
 
@@ -58,6 +66,8 @@ async function traverseFolder(folderId) {
 
     for (const item of items) {
         if (item.mimeType === "application/vnd.google-apps.folder") {
+            console.log("📂 Found album folder:", item.name, "| ID:", item.id);
+
             let albumInfo = { folderId: item.id, name: item.name, description: "", cover: "", songs: [] };
 
             // Load info.json if exists
@@ -66,13 +76,17 @@ async function traverseFolder(folderId) {
                 const infoData = await infoRes.json();
                 if (infoData.files.length > 0) {
                     const infoFileId = infoData.files[0].id;
+                    console.log("ℹ️ info.json found for album:", item.name, "| File ID:", infoFileId);
                     const infoJson = await fetch(`https://www.googleapis.com/drive/v3/files/${infoFileId}?alt=media&key=${API_KEY}`);
                     const info = await infoJson.json();
                     albumInfo.name = info.Name || albumInfo.name;
                     albumInfo.description = info.Description || "";
+                    console.log("ℹ️ Album info loaded:", albumInfo.name, "| Description:", albumInfo.description);
+                } else {
+                    console.log("⚠️ No info.json found for album:", item.name);
                 }
             } catch (err) {
-                console.warn("⚠️ No info.json for album:", item.name);
+                console.warn("⚠️ Error fetching info.json for album:", item.name, err);
             }
 
             // Load songs and cover
@@ -86,13 +100,24 @@ async function traverseFolder(folderId) {
                     };
                     albumInfo.songs.push(track);
                     songs.push(track); // Add globally
+                    console.log("🎵 Song added:", f.name, "| Album:", albumInfo.name);
                 } else if (f.name.toLowerCase() === "cover.jpeg") {
                     albumInfo.cover = `https://drive.google.com/uc?export=download&id=${f.id}`;
+                    console.log("🖼️ Cover found for album:", albumInfo.name, "| URL:", albumInfo.cover);
+                } else {
+                    console.log("⏩ Skipping non-audio/non-cover file:", f.name);
                 }
             }
 
-            if (!albumInfo.cover) albumInfo.cover = "svg/music.svg";
+            if (!albumInfo.cover) {
+                albumInfo.cover = "svg/music.svg";
+                console.log("⚠️ No cover found, using default for album:", albumInfo.name);
+            }
+
             albums.push(albumInfo);
+            console.log("✅ Album loaded:", albumInfo.name, "| Total songs:", albumInfo.songs.length);
+        } else {
+            console.log("⏩ Skipping non-folder item in root:", item.name);
         }
     }
 }
@@ -104,7 +129,9 @@ function displayAlbums() {
     const container = document.querySelector(".cardcontainer");
     container.innerHTML = "";
 
+    console.log("📀 Displaying albums on page...");
     albums.forEach((album, idx) => {
+        console.log("📀 Rendering album:", album.name, "| Index:", idx, "| Songs:", album.songs.length);
         container.innerHTML += `
             <div data-album="${idx}" class="card">
                 <svg class="play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="50" height="50">
@@ -126,6 +153,8 @@ function displayAlbums() {
     Array.from(document.getElementsByClassName("card")).forEach(card => {
         card.addEventListener("click", e => {
             const idx = parseInt(card.dataset.album);
+            console.log("🖱️ Album clicked:", albums[idx].name, "| Index:", idx);
+
             currentAlbumIndex = idx;
             songs = albums[idx].songs;
 
@@ -135,6 +164,7 @@ function displayAlbums() {
             const ul = document.querySelector(".songs-list ul");
             ul.innerHTML = "";
             songs.forEach(track => {
+                console.log("📄 Adding track to playlist:", track.name, "| Album:", track.album);
                 ul.innerHTML += `
                     <li>
                         <img src="svg/music.svg" alt="">
@@ -144,13 +174,16 @@ function displayAlbums() {
                         </div>
                         <div class="playnow">
                             <span>playnow</span>
-                            <img class="invert" src="svg/playbtn.svg" alt="">
+                            <img class="invert" src="svg/playbtn.svg" alt="Play">
                         </div>
                     </li>`;
             });
 
             Array.from(ul.getElementsByTagName("li")).forEach((li, idx2) => {
-                li.addEventListener("click", () => playMusic(idx2));
+                li.addEventListener("click", () => {
+                    console.log("🖱️ Song clicked in playlist:", songs[idx2].name, "| Index:", idx2);
+                    playMusic(idx2);
+                });
             });
         });
     });
@@ -162,7 +195,7 @@ function displayAlbums() {
 async function main() {
     console.log("🚀 Starting music player...");
     await traverseFolder(DRIVE_FOLDER_ID);
-    console.log("✅ Loaded albums and songs");
+    console.log("✅ Finished loading albums and songs");
     displayAlbums();
 
     const playBtn = document.getElementById("play");
@@ -170,9 +203,11 @@ async function main() {
         if (currentsong.paused) {
             currentsong.play();
             playBtn.src = "svg/pause.svg";
+            console.log("▶️ Playback resumed");
         } else {
             currentsong.pause();
             playBtn.src = "svg/playbtn.svg";
+            console.log("⏸️ Playback paused");
         }
     });
 
@@ -184,40 +219,50 @@ async function main() {
     document.getElementById("previous").addEventListener("click", () => {
         let idx = currentSongIndex - 1;
         if (idx < 0) idx = songs.length - 1;
+        console.log("⏮️ Previous song clicked | Index:", idx);
         playMusic(idx);
     });
 
     document.getElementById("next").addEventListener("click", () => {
         let idx = currentSongIndex + 1;
         if (idx >= songs.length) idx = 0;
+        console.log("⏭️ Next song clicked | Index:", idx);
         playMusic(idx);
     });
 
     const range = document.getElementById("range");
-    range.addEventListener("change", e => currentsong.volume = e.target.value / 100);
+    range.addEventListener("change", e => {
+        currentsong.volume = e.target.value / 100;
+        console.log("🔊 Volume changed to:", currentsong.volume);
+    });
 
     document.querySelector(".volume img").addEventListener("click", e => {
         if (e.target.src.includes("volume.svg")) {
             e.target.src = e.target.src.replace("volume.svg", "mute.svg");
             currentsong.volume = 0;
+            console.log("🔇 Volume muted");
         } else {
             e.target.src = e.target.src.replace("mute.svg", "volume.svg");
             currentsong.volume = 0.7;
+            console.log("🔊 Volume unmuted | Set to 0.7");
         }
     });
 
     document.querySelector(".hamburger").addEventListener("click", () => {
         document.querySelector(".left").style.left = "0px";
         document.querySelector(".left").style.width = "80vw";
+        console.log("📂 Sidebar opened");
     });
 
     document.querySelector(".close").addEventListener("click", () => {
         document.querySelector(".left").style.left = "-80vw";
+        console.log("📂 Sidebar closed");
     });
 
     document.querySelector(".seekbar").addEventListener("click", e => {
         let percent = e.offsetX / e.target.getBoundingClientRect().width;
         currentsong.currentTime = percent * currentsong.duration;
+        console.log("⏱️ Seekbar clicked | New time:", currentsong.currentTime);
     });
 }
 
