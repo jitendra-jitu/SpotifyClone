@@ -17,8 +17,9 @@ async function getsongs(folder) {
     currentfolder = folder;
     console.log("📂 Loading songs from folder:", folder);
 
-    let res = await fetch(`/.netlify/functions/songs?folder=${folder}`);
+    let res = await fetch(`/api/songs?folder=${folder}`);
     let data = await res.json();
+
 
     if (!data.Songs) {
         console.error("❌ No songs found for", folder);
